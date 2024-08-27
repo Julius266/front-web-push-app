@@ -1,22 +1,27 @@
-// src/app/page.js
 "use client";
 
-
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 const PUBLIC_VAPID_KEY = "BJHMAExOhPj3AwQtYYK1Sh5ZxBFKpRNOYml6iFUc3DPVSwUCLWGhGISiLYl7x0Ibr7_QaDfUqdOpaOfJ4BK4tk8";
 
 export default function Home() {
-  
+  const [isSubscribed, setIsSubscribed] = useState(false);
+
   useEffect(() => {
-    if ("serviceWorker" in navigator) {
+    console.log("useEffect se ha ejecutado");
+    if (!isSubscribed && "serviceWorker" in navigator) {
       navigator.serviceWorker
         .register("/sw.js")
         .then((registration) => {
           console.log("Service Worker registrado con éxito:", registration);
-          return navigator.serviceWorker.ready; // Asegura que el SW esté listo
+          return registration.pushManager.getSubscription();
         })
-        .then(() => requestPermissions()) // Llama a la función que solicita permisos
+        .then((subscription) => {
+          if (!subscription) {
+            requestPermissions();
+          }
+          setIsSubscribed(true);  // Actualiza el estado para evitar doble suscripción
+        })
         .catch((error) => {
           console.error("Error al registrar el Service Worker:", error);
         });
@@ -24,23 +29,9 @@ export default function Home() {
       console.warn("Service Workers no están soportados en este navegador.");
     }
 
-    // Cargar suscripciones al montar el componente
     loadSubscriptions();
 
-    // Añadir listener al botón
-    document.getElementById("notify-btn").addEventListener("click", function () {
-      const url = "https://sistemasgenesis.com.ec/"; // Reemplaza con la URL que desees
-      navigator.serviceWorker.ready.then(function (registration) {
-        registration.showNotification("Notificación Manual", {
-          body: "Has presionado el botón para enviar esta notificación.",
-          icon: "https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTnKvQE0xOyMLhnfmhBRZbUXkmQWmlTTMGPUABNn7bNs9XYRi1W",
-          data: {
-            url: url,
-          },
-        });
-      });
-    });
-  }, []);
+  }, [isSubscribed]);
 
   async function requestPermissions() {
     try {
@@ -49,7 +40,6 @@ export default function Home() {
         throw new Error("Permiso de notificación no concedido");
       }
 
-      // Solicitar la ubicación
       requestLocationPermission();
     } catch (error) {
       console.error("Error solicitando permisos:", error);
@@ -61,14 +51,14 @@ export default function Home() {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           console.log("Ubicación obtenida:", position);
-          subscribeUserWithLocation(position); // Llama a la función con la ubicación
+          subscribeUserWithLocation(position);
         },
         (error) => {
           console.error("Error al obtener la ubicación:", error);
         },
         {
-          enableHighAccuracy: false, // Reducir la precisión si no es necesario
-          timeout: 10000, // Aumentar el tiempo de espera
+          enableHighAccuracy: false,
+          timeout: 10000,
           maximumAge: 0,
         }
       );
@@ -89,7 +79,7 @@ export default function Home() {
               applicationServerKey: urlBase64ToUint8Array(PUBLIC_VAPID_KEY),
             });
 
-            console.log(subscription); // Verifica que tenga endpoint, keys, etc.
+            console.log(subscription);
 
             const locationData = {
               latitude: position.coords.latitude,

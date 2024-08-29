@@ -15,7 +15,7 @@ const SubscriptionTable = () => {
     const loadSubscriptions = async () => {
       try {
         const response = await fetch(
-          "https://b13whgwt-5000.use2.devtunnels.ms/api/notifications/subscriptions"
+          "https://bs19l2t0-5000.use2.devtunnels.ms/api/notifications/subscriptions"
         );
         const data = await response.json();
         setSubscriptions(data);
@@ -35,7 +35,7 @@ const SubscriptionTable = () => {
 
     try {
       await fetch(
-        "https://b13whgwt-5000.use2.devtunnels.ms/api/notifications/send",
+        "https://bs19l2t0-5000.use2.devtunnels.ms/api/notifications/send",
         {
           method: "POST",
           body: JSON.stringify({

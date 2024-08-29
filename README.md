@@ -1,36 +1,43 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Front Web Push App
+Este es un proyecto de aplicación web que implementa notificaciones push, desarrollado con Next.js, un framework de React para aplicaciones web modernas. La aplicación se ha configurado con create-next-app y utiliza herramientas como next/font para optimizar automáticamente y cargar fuentes personalizadas.
 
-## Getting Started
+Tabla de Contenidos:
+1. Descripción del Proyecto
+2. Características Principales
+3. Tecnologías Utilizadas
+4. Instalación
+5. Uso
 
-First, run the development server:
+# Descripción del Proyecto:
+Front Web Push App es una aplicación web diseñada para enviar notificaciones push a los usuarios. Utiliza las capacidades de Service Workers para manejar notificaciones incluso cuando la aplicación no está activa en el navegador. Esta herramienta es ideal para sitios web que necesitan mantener a sus usuarios informados con actualizaciones en tiempo real, alertas, promociones, y mucho más.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+La aplicación se ha desarrollado con Next.js, lo que permite un renderizado del lado del servidor (SSR) eficiente, mejoras en SEO, y una experiencia de usuario más rápida.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+# Características Principales:
+* Notificaciones Push: Envío de notificaciones personalizadas a los usuarios, incluso cuando la aplicación no está abierta.
+* Soporte para PWA: Implementación como Aplicación Web Progresiva (PWA), que permite añadirla a la pantalla de inicio y recibir         notificaciones fuera del navegador.
+* Diseño Responsivo: Interfaz adaptable para diferentes dispositivos (móviles, tabletas y escritorio).
+* Integración de Service Workers: Gestión de caché y manejo de notificaciones utilizando Service Workers.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+# Tecnologías Utilizadas:
+* Next.js - Framework de React para aplicaciones web.
+* React - Biblioteca de JavaScript para la construcción de interfaces de usuario.
+* Tailwind CSS - Framework de utilidades CSS para estilizar la aplicación.
+* Vercel - Plataforma para desplegar aplicaciones web de Next.js.
+* PostCSS - Herramienta para transformar CSS con JavaScript.
+* Service Workers - Tecnología para manejar notificaciones push y tareas en segundo plano.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+# Instalación:
+Sigue los pasos a continuación para instalar y configurar el proyecto en tu entorno local:
 
-## Learn More
+1. Clona el repositorio:
+* git clone https://github.com/Julius266/front-web-push-app.git
+* cd front-web-push-app
 
-To learn more about Next.js, take a look at the following resources:
+2. Instala las dependencias:
+*  npm install
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+# USO
+Para iniciar el servidor de desarrollo, ejecuta:
+* npm run dev
+Abre http://localhost:3000 en tu navegador para ver la aplicación.

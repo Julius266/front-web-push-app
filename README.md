@@ -35,9 +35,12 @@ Sigue los pasos a continuación para instalar y configurar el proyecto en tu ent
 * cd front-web-push-app
 
 2. Instala las dependencias:
-*  npm install
-
-# USO
+```bash
+npm install
+```
+# USO 
 Para iniciar el servidor de desarrollo, ejecuta:
-* npm run dev
+```bash
+npm run dev
+```
 Abre http://localhost:3000 en tu navegador para ver la aplicación.

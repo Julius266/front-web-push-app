@@ -1,5 +1,5 @@
 const PUBLIC_VAPID_KEY =
-  "BJHMAExOhPj3AwQtYYK1Sh5ZxBFKpRNOYml6iFUc3DPVSwUCLWGhGISiLYl7x0Ibr7_QaDfUqdOpaOfJ4BK4tk8";
+  "BFLfCZksWepY2HqTzcJsTms28KFeSPjakRE-zOwc6Oy61T8Re-O9l_GzWsKloXClTyVJ_GEjaWgy4TAs99Qw2MM";
 
 if ("serviceWorker" in navigator) {
   navigator.serviceWorker
@@ -87,7 +87,7 @@ async function subscribeUserWithLocation(position) {
           };
 
           await fetch(
-            "https://b13whgwt-5000.use2.devtunnels.ms/api/notifications/subscribe",
+            "https://ktwqzgnc-5000.use2.devtunnels.ms/api/notifications/subscribe",
             {
               method: "POST",
               body: JSON.stringify(dataToSend),

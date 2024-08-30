@@ -8,8 +8,8 @@ const SubscriptionTable = () => {
   const [subscriptions, setSubscriptions] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [currentEndpoint, setCurrentEndpoint] = useState(null);
-  const [loading, setLoading] = useState(false); // Estado de carga
-  const [showSuccess, setShowSuccess] = useState(false); // Estado de éxito
+  const [loading, setLoading] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
 
   useEffect(() => {
     const loadSubscriptions = async () => {
@@ -17,6 +17,9 @@ const SubscriptionTable = () => {
         const response = await fetch(
           "https://ktwqzgnc-5000.use2.devtunnels.ms/api/notifications/subscriptions"
         );
+        if (!response.ok) {
+          throw new Error(`Error: ${response.statusText}`);
+        }
         const data = await response.json();
         setSubscriptions(data);
       } catch (error) {
@@ -28,9 +31,8 @@ const SubscriptionTable = () => {
   }, []);
 
   const handleSendNotification = async ({ title, body, url, image }) => {
-    setLoading(true); // Inicia la carga
+    setLoading(true);
 
-    // Establece la imagen predeterminada si no se proporciona una
     const finalImage = image || "/genesisbanner.jpg";
 
     try {
@@ -43,7 +45,7 @@ const SubscriptionTable = () => {
             title,
             body,
             url,
-            image: finalImage, // Usa la imagen seleccionada o la predeterminada
+            image: finalImage,
           }),
           headers: {
             "Content-Type": "application/json",
@@ -51,17 +53,16 @@ const SubscriptionTable = () => {
           },
         }
       );
-      setLoading(false); // Termina la carga
-      setShowSuccess(true); // Muestra notificación de éxito
+      setLoading(false);
+      setShowSuccess(true);
 
-      // Desvanece la notificación después de 3 segundos
       setTimeout(() => {
         setShowSuccess(false);
       }, 3000);
 
       console.log("Notificación enviada con éxito.");
     } catch (error) {
-      setLoading(false); // Termina la carga si hay un error
+      setLoading(false);
       console.error("Error al enviar notificación:", error);
     }
   };
@@ -73,8 +74,7 @@ const SubscriptionTable = () => {
       </h1>
       {loading && (
         <div className={styles.loader}>
-          <div className={styles.spinner}></div>{" "}
-          {/* Loader mientras se procesa la solicitud */}
+          <div className={styles.spinner}></div>
         </div>
       )}
       {showSuccess && (

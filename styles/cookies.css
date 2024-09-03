@@ -1,0 +1,64 @@
+/* Fondo de superposición */
+#cookie-banner-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); 
+    z-index: 999; 
+}
+
+/* Banner de cookies */
+#cookie-banner {
+    position: fixed;
+    bottom: 20px;
+    left: 10%;
+    transform: translateX(-50%);
+    width: 300px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    z-index: 1000;
+}
+
+#cookie-banner img {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 10px;
+}
+
+#cookie-banner h2 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+}
+
+#cookie-banner p {
+    font-size: 14px;
+    color: #666;
+    margin: 10px 0;
+    text-align: center;
+}
+
+#cookie-banner button {
+    background-color: #333;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+#cookie-banner a {
+    font-size: 12px;
+    color: #007BFF;
+    text-decoration: underline;
+    cursor: pointer;
+}

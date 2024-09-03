@@ -1,17 +1,60 @@
 import { useEffect, useState } from 'react';
 import { setCookie, getCookie } from '../utils/cookies';
 import '../styles/globals.css';
+import '../styles/cookies.css';  
+import { useRouter } from 'next/router';
 
 function MyApp({ Component, pageProps }) {
     const [showBanner, setShowBanner] = useState(false);
+    const router = useRouter();
 
     useEffect(() => {
-        // Verificar si las cookies ya fueron aceptadas
+        const handleRouteChange = (url) => {
+            const cookiesAccepted = getCookie("cookiesAccepted");
+            if (cookiesAccepted) {
+                const visitedPages = getCookie("visitedPages") ? JSON.parse(getCookie("visitedPages")) : [];
+                visitedPages.push(url);
+                setCookie("visitedPages", JSON.stringify(visitedPages), 7);
+
+                const sendVisitedPagesToBackend = async () => {
+                    if (visitedPages.length > 0) {
+                        try {
+                            const response = await fetch('https://ktwqzgnc-5000.use2.devtunnels.ms/api/track-visit', {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json'
+                                },
+                                body: JSON.stringify({ visitedPages })
+                            });
+                            const data = await response.json();
+                            console.log(data.message);
+                        } catch (error) {
+                            console.error('Error:', error);
+                        }
+                    }
+                };
+
+                sendVisitedPagesToBackend();
+            }
+        };
+
+        router.events.on('routeChangeComplete', handleRouteChange);
+
         const cookiesAccepted = getCookie("cookiesAccepted");
         if (!cookiesAccepted) {
             setShowBanner(true);
         }
 
+        handleRouteChange(window.location.href);
+
+        return () => {
+            router.events.off('routeChangeComplete', handleRouteChange);
+        };
+    }, [router.events]);
+
+    const acceptCookies = () => {
+        setCookie("cookiesAccepted", "true", 365);
+        setShowBanner(false);
         const visitedPages = getCookie("visitedPages") ? JSON.parse(getCookie("visitedPages")) : [];
         visitedPages.push(window.location.href);
         setCookie("visitedPages", JSON.stringify(visitedPages), 7);
@@ -19,7 +62,6 @@ function MyApp({ Component, pageProps }) {
         const sendVisitedPagesToBackend = async () => {
             if (visitedPages.length > 0) {
                 try {
-                    // Asegúrate de que la URL apunte al backend correcto
                     const response = await fetch('https://ktwqzgnc-5000.use2.devtunnels.ms/api/track-visit', {
                         method: 'POST',
                         headers: {
@@ -27,11 +69,6 @@ function MyApp({ Component, pageProps }) {
                         },
                         body: JSON.stringify({ visitedPages })
                     });
-
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-
                     const data = await response.json();
                     console.log(data.message);
                 } catch (error) {
@@ -41,22 +78,21 @@ function MyApp({ Component, pageProps }) {
         };
 
         sendVisitedPagesToBackend();
-    }, []);
-
-    const acceptCookies = () => {
-        setCookie("cookiesAccepted", "true", 365); // Establecer la cookie por un año
-        setShowBanner(false);
     };
 
     return (
         <>
             {showBanner && (
-                <div id="cookie-banner" style={{ position: 'fixed', bottom: '10px', width: '100%', backgroundColor: '#f1f1f1', textAlign: 'center', padding: '20px', boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)' }}>
-                    <img src="/genesisbanner.jpg" alt="Cookies" style={{ width: '50px', height: '50px' }} />
-                    <p>Utilizamos cookies propias y de terceros para mejorar nuestros servicios.</p>
-                    <button onClick={acceptCookies} style={{ backgroundColor: '#4CAF50', color: 'white', padding: '10px 20px', border: 'none', borderRadius: '5px', cursor: 'pointer' }}>De acuerdo</button>
-                    <a href="/cookies-policy" style={{ color: '#555', textDecoration: 'underline' }}>Aviso de Cookies</a>
-                </div>
+                <>
+                    <div id="cookie-banner-overlay"></div>
+                    <div id="cookie-banner">
+                        <img src="/cookie.png" alt="Cookies" />
+                        <h2>Cookies</h2>
+                        <p>Utilizamos cookies propias y de terceros para mejorar nuestros servicios.</p>
+                        <button onClick={acceptCookies}>De acuerdo</button>
+                        <a href="/cookies-policy">Aviso de Cookies</a>
+                    </div>
+                </>
             )}
             <Component {...pageProps} />
         </>
